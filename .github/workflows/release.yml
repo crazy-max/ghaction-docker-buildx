@@ -37,9 +37,7 @@ jobs:
           git checkout -B releases/${{ steps.prepare.outputs.major_tag }}
           if [ -n "${{ steps.prepare.outputs.major_exists }}" ]; then
             git branch --set-upstream-to=origin/releases/${{ steps.prepare.outputs.major_tag }} releases/${{ steps.prepare.outputs.major_tag }}
-            git pull --rebase
           fi
-          git merge ${GITHUB_REF}
       -
         name: NPM production deps
         run: |
@@ -53,7 +51,7 @@ jobs:
           git status --short -uno
           git commit -m 'Release ${{ steps.prepare.outputs.tag_name }}'
           git show --stat-count=10 HEAD
-          git push origin releases/${{ steps.prepare.outputs.major_tag }}
+          git push -f origin releases/${{ steps.prepare.outputs.major_tag }}
       -
         name: Update ${{ steps.prepare.outputs.minor_tag }} tag
         run: |
