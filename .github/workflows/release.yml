@@ -64,32 +64,3 @@ jobs:
           git push origin :refs/tags/${{ steps.prepare.outputs.major_tag }}
           git tag -fa ${{ steps.prepare.outputs.major_tag }} -m "Release ${{ steps.prepare.outputs.tag_name }}"
           git push origin ${{ steps.prepare.outputs.major_tag }}
-
-  check:
-    runs-on: ubuntu-18.04
-    needs: release
-    strategy:
-      matrix:
-        version:
-          - latest
-          - v0.2.2
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v1
-      -
-        name: Set up Docker Buildx
-        id: buildx
-        uses: crazy-max/ghaction-docker-buildx@releases/v1
-        with:
-          version: ${{ matrix.version }}
-      -
-        name: Available platforms
-        run: echo ${{ steps.buildx.outputs.platforms }}
-      -
-        name: Run Buildx
-        run: |
-          docker buildx build \
-            --platform linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x \
-            --output "type=image,push=false" \
-            --file ./test/Dockerfile ./test
