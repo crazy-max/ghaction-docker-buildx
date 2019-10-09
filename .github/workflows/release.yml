@@ -1,13 +1,15 @@
 name: release
 
 on:
-  create:
+  push:
+    branches-ignore:
+      - '**'
     tags:
-      - v*.*.*
+      - 'v*.*.*'
 
 jobs:
   release:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       -
         name: Checkout
