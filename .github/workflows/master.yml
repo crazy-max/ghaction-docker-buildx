@@ -14,12 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
+        # https://github.com/actions/checkout
         name: Checkout
         uses: actions/checkout@v1
       -
         # https://github.com/actions/checkout/issues/6
         name: Fix detached HEAD
         run: git checkout ${GITHUB_REF#refs/heads/}
+      -
+        # https://github.com/actions/setup-node
+        name: Set up Node
+        uses: actions/setup-node@v1
       -
         name: Prune prod
         run: |
