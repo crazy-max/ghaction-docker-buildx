@@ -41,12 +41,7 @@ function getCliPluginsDir(): string {
 function getFileName(version: string): string {
   const platform: string = osPlat == 'win32' ? 'windows' : osPlat;
   const ext: string = osPlat == 'win32' ? '.exe' : '';
-  const filename: string = util.format(
-    'buildx-%s.%s-amd64%s',
-    version,
-    platform,
-    ext
-  );
+  const filename: string = util.format('buildx-%s.%s-amd64%s', version, platform, ext);
   return filename;
 }
 
@@ -55,24 +50,15 @@ interface GitHubRelease {
 }
 
 async function determineVersion(version: string): Promise<string> {
-  let rest: restm.RestClient = new restm.RestClient(
-    'ghaction-docker-buildx',
-    'https://github.com',
-    undefined,
-    {
-      headers: {
-        Accept: 'application/json'
-      }
+  let rest: restm.RestClient = new restm.RestClient('ghaction-docker-buildx', 'https://github.com', undefined, {
+    headers: {
+      Accept: 'application/json'
     }
-  );
+  });
 
-  let res: restm.IRestResponse<GitHubRelease> = await rest.get<GitHubRelease>(
-    `/docker/buildx/releases/${version}`
-  );
+  let res: restm.IRestResponse<GitHubRelease> = await rest.get<GitHubRelease>(`/docker/buildx/releases/${version}`);
   if (res.statusCode != 200 || res.result === null) {
-    throw new Error(
-      `Cannot find Docker buildx ${version} release (http ${res.statusCode})`
-    );
+    throw new Error(`Cannot find Docker buildx ${version} release (http ${res.statusCode})`);
   }
 
   return res.result.tag_name;
