@@ -30,7 +30,7 @@
     "typed-rest-client": "^1.7.1"
   },
   "devDependencies": {
-    "@actions/io": "^1.0.0",
+    "@actions/io": "^1.0.2",
     "@types/download": "^6.2.4",
     "@types/jest": "^24.0.25",
     "@types/node": "^13.1.6",
