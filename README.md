@@ -5,13 +5,13 @@
 [![Become a sponsor](https://img.shields.io/badge/sponsor-crazy--max-181717.svg?logo=github&style=flat-square)](https://github.com/sponsors/crazy-max)
 [![Paypal Donate](https://img.shields.io/badge/donate-paypal-00457c.svg?logo=paypal&style=flat-square)](https://www.paypal.me/crazyws)
 
-## ✨ About
+## About
 
 GitHub Action to set up Docker [Buildx](https://github.com/docker/buildx).
 
 If you are interested, [check out](https://git.io/Je09Y) my other :octocat: GitHub Actions!
 
-## 🚀 Usage
+## Usage
 
 Below is a simple snippet to use this action. A [live example](https://github.com/crazy-max/ghaction-docker-buildx/actions) is also available for this repository.
 
@@ -50,7 +50,7 @@ jobs:
             --file ./test/Dockerfile ./test
 ```
 
-## 💅 Customizing
+## Customizing
 
 ### inputs
 
@@ -68,16 +68,16 @@ Following outputs are available
 |---------------|---------|---------------------------------------|
 | `platforms`   | String  | Available platforms (comma separated) |
 
-## :warning: Limitation
+## Limitation
 
 This action is only available for Linux [virtual environments](https://help.github.com/en/articles/virtual-environments-for-github-actions#supported-virtual-environments-and-hardware-resources).
 
-## 🤝 How can I help ?
+## How can I help ?
 
 All kinds of contributions are welcome :raised_hands:! The most basic way to show your support is to star :star2: the project, or to raise issues :speech_balloon: You can also support this project by [**becoming a sponsor on GitHub**](https://github.com/sponsors/crazy-max) :clap: or by making a [Paypal donation](https://www.paypal.me/crazyws) to ensure this journey continues indefinitely! :rocket:
 
 Thanks again for your support, it is much appreciated! :pray:
 
-## 📝 License
+## License
 
 MIT. See `LICENSE` for more details.
