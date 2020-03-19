@@ -3,6 +3,7 @@ import * as child_process from 'child_process';
 import * as os from 'os';
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
+import * as stateHelper from './state-helper';
 
 async function run() {
   try {
@@ -50,4 +51,20 @@ async function run() {
   }
 }
 
-run();
+async function cleanup(): Promise<void> {
+  try {
+    console.log('🚿 Removing builder instance...');
+    await exec.exec('docker', ['buildx', 'rm', 'builder']);
+  } catch (error) {
+    core.warning(error.message);
+  }
+}
+
+// Main
+if (!stateHelper.IsPost) {
+  run();
+}
+// Post
+else {
+  cleanup();
+}
