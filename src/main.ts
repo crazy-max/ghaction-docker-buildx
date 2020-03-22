@@ -3,6 +3,7 @@ import * as child_process from 'child_process';
 import * as os from 'os';
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
+import * as github from '@actions/github';
 import * as stateHelper from './state-helper';
 
 async function run() {
@@ -25,7 +26,15 @@ async function run() {
     await exec.exec('docker', ['run', '--rm', '--privileged', 'multiarch/qemu-user-static', '--reset', '-p', 'yes']);
 
     console.log('🔨 Creating a new builder instance...');
-    await exec.exec('docker', ['buildx', 'create', '--name', 'builder', '--driver', 'docker-container', '--use']);
+    await exec.exec('docker', [
+      'buildx',
+      'create',
+      '--name',
+      `builder-${github.context.sha}`,
+      '--driver',
+      'docker-container',
+      '--use'
+    ]);
 
     console.log('🏃 Booting builder...');
     await exec.exec('docker', ['buildx', 'inspect', '--bootstrap']);
@@ -54,7 +63,7 @@ async function run() {
 async function cleanup(): Promise<void> {
   try {
     console.log('🚿 Removing builder instance...');
-    await exec.exec('docker', ['buildx', 'rm', 'builder']);
+    await exec.exec('docker', ['buildx', 'rm', `builder-${github.context.sha}`]);
   } catch (error) {
     core.warning(error.message);
   }
