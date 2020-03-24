@@ -45,13 +45,7 @@ async function run() {
     });
     for (const line of inspect.split(os.EOL)) {
       if (line.startsWith('Platforms')) {
-        core.setOutput(
-          'platforms',
-          line
-            .replace('Platforms: ', '')
-            .replace(/\s/g, '')
-            .trim()
-        );
+        core.setOutput('platforms', line.replace('Platforms: ', '').replace(/\s/g, '').trim());
         break;
       }
     }
