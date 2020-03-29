@@ -50,6 +50,13 @@ jobs:
             --file ./test/Dockerfile ./test
 ```
 
+## Projects using this action
+
+* [Diun](https://github.com/crazy-max/diun)
+* [GO Simple Tunnel](https://github.com/ginuerzh/gost)
+* [RSSHub](https://github.com/DIYgod/RSSHub)
+* [Cloudflared](https://github.com/crazy-max/docker-cloudflared)
+
 ## Customizing
 
 ### inputs
