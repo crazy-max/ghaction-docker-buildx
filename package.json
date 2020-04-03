@@ -28,7 +28,7 @@
     "@actions/exec": "^1.0.3",
     "@actions/github": "^2.1.1",
     "download": "^8.0.0",
-    "typed-rest-client": "^1.7.2"
+    "typed-rest-client": "^1.7.3"
   },
   "devDependencies": {
     "@actions/io": "^1.0.2",
