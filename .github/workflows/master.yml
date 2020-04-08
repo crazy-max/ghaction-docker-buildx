@@ -3,12 +3,7 @@ name: master
 on:
   push:
     branches:
-      - 'master'
-    paths:
-      - 'node_modules/**'
-      - 'package.json'
-      - 'package-lock.json'
-      - '.github/workflows/master.yml'
+      - master
 
 jobs:
   prune:
@@ -22,10 +17,6 @@ jobs:
         # https://github.com/actions/checkout/issues/6
         name: Fix detached HEAD
         run: git checkout ${GITHUB_REF#refs/heads/}
-      -
-        # https://github.com/actions/setup-node
-        name: Set up Node
-        uses: actions/setup-node@v1
       -
         name: Build
         run: |
@@ -44,6 +35,6 @@ jobs:
         run: |
           git add .
           if output=$(git status --porcelain) && [ ! -z "$output" ]; then
-            git commit -m 'Update node_modules'
+            git commit -m 'Update generated content'
             git push
           fi
