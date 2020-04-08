@@ -27,12 +27,10 @@ jobs:
         name: Set up Node
         uses: actions/setup-node@v1
       -
-        name: Prune prod
+        name: Build
         run: |
-          npm install -g removeNPMAbsolutePaths
-          rm -rf node_modules
-          npm install --production
-          removeNPMAbsolutePaths . --force --fields _where _args
+          npm install
+          npm run build
       -
         name: Set up Git
         env:

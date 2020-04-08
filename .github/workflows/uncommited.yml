@@ -20,20 +20,15 @@ jobs:
         name: Build
         run: |
           npm install
-          npm run format
-          npm run build
       -
-        name: Prune prod
+        name: Pre-checkin
         run: |
-          npm install -g removeNPMAbsolutePaths
-          rm -rf node_modules
-          npm install --production
-          removeNPMAbsolutePaths . --force --fields _where _args
+          npm run pre-checkin
       -
         name: Check for uncommitted changes
         run: |
           if [[ `git status --porcelain` ]]; then
             git status --porcelain
-            echo "##[error] found changed files after build. please 'npm run build && npm run format && npm prune --production'"
+            echo "##[error] found changed files after build. please 'npm run pre-checkin'"
             exit 1
           fi
