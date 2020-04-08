@@ -48,8 +48,10 @@ jobs:
       -
         name: NPM production deps
         run: |
-          npm run build-dep
-          npm run prune
+          npm install -g removeNPMAbsolutePaths
+          rm -rf node_modules
+          npm install --production
+          removeNPMAbsolutePaths . --force --fields _where _args
       -
         name: Commit and push changes
         run: |
