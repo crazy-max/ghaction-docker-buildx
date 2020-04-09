@@ -4,11 +4,9 @@ on:
   pull_request:
     branches:
       - master
-      - releases/*
   push:
     branches:
       - master
-      - releases/*
 
 jobs:
   ci:
