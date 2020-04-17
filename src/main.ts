@@ -5,6 +5,7 @@ import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import * as github from '@actions/github';
 import * as stateHelper from './state-helper';
+import path from "path";
 
 async function run() {
   try {
@@ -14,7 +15,8 @@ async function run() {
     }
 
     const version = core.getInput('version') || 'latest';
-    await installer.getBuildx(version);
+    const dockerConfigHome: string = process.env.DOCKER_CONFIG || path.join(os.homedir(), '.docker');
+    await installer.getBuildx(version, dockerConfigHome);
 
     console.log('🐳 Docker info...');
     await exec.exec('docker', ['info']);

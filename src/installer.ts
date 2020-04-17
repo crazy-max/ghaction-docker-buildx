@@ -8,13 +8,13 @@ import * as exec from '@actions/exec';
 
 let osPlat: string = os.platform();
 
-export async function getBuildx(version: string): Promise<string> {
+export async function getBuildx(version: string, dockerConfigHome: string): Promise<string> {
   const selected = await determineVersion(version);
   if (selected) {
     version = selected;
   }
 
-  const cliPluginsDir = path.join(os.homedir(), '.docker', 'cli-plugins');
+  const cliPluginsDir = path.join(dockerConfigHome, 'cli-plugins');
   const pluginName = osPlat == 'win32' ? 'docker-buildx.exe' : 'docker-buildx';
   const downloadUrl = util.format(
     'https://github.com/docker/buildx/releases/download/%s/%s',
@@ -30,12 +30,6 @@ export async function getBuildx(version: string): Promise<string> {
   }
 
   return path.join(cliPluginsDir, pluginName);
-}
-
-function getCliPluginsDir(): string {
-  const cliPluginsPath = path.join(os.homedir(), '.docker', 'cli-plugins');
-  fs.mkdirSync(cliPluginsPath, {recursive: true});
-  return cliPluginsPath;
 }
 
 function getFileName(version: string): string {
