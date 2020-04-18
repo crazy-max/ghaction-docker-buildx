@@ -4945,6 +4945,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const installer = __importStar(__webpack_require__(749));
 const child_process = __importStar(__webpack_require__(129));
@@ -4953,6 +4956,7 @@ const core = __importStar(__webpack_require__(470));
 const exec = __importStar(__webpack_require__(986));
 const github = __importStar(__webpack_require__(469));
 const stateHelper = __importStar(__webpack_require__(153));
+const path_1 = __importDefault(__webpack_require__(622));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -4961,7 +4965,8 @@ function run() {
                 return;
             }
             const version = core.getInput('version') || 'latest';
-            yield installer.getBuildx(version);
+            const dockerConfigHome = process.env.DOCKER_CONFIG || path_1.default.join(os.homedir(), '.docker');
+            yield installer.getBuildx(version, dockerConfigHome);
             console.log('🐳 Docker info...');
             yield exec.exec('docker', ['info']);
             console.log('ℹ️ Buildx info');
@@ -23885,20 +23890,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const download = __importStar(__webpack_require__(927));
-const fs = __importStar(__webpack_require__(747));
 const os = __importStar(__webpack_require__(87));
 const path = __importStar(__webpack_require__(622));
 const util = __importStar(__webpack_require__(669));
 const restm = __importStar(__webpack_require__(105));
 const exec = __importStar(__webpack_require__(986));
 let osPlat = os.platform();
-function getBuildx(version) {
+function getBuildx(version, dockerConfigHome) {
     return __awaiter(this, void 0, void 0, function* () {
         const selected = yield determineVersion(version);
         if (selected) {
             version = selected;
         }
-        const cliPluginsDir = path.join(os.homedir(), '.docker', 'cli-plugins');
+        const cliPluginsDir = path.join(dockerConfigHome, 'cli-plugins');
         const pluginName = osPlat == 'win32' ? 'docker-buildx.exe' : 'docker-buildx';
         const downloadUrl = util.format('https://github.com/docker/buildx/releases/download/%s/%s', version, getFileName(version));
         console.log(`⬇️ Downloading ${downloadUrl}...`);
@@ -23910,11 +23914,6 @@ function getBuildx(version) {
     });
 }
 exports.getBuildx = getBuildx;
-function getCliPluginsDir() {
-    const cliPluginsPath = path.join(os.homedir(), '.docker', 'cli-plugins');
-    fs.mkdirSync(cliPluginsPath, { recursive: true });
-    return cliPluginsPath;
-}
 function getFileName(version) {
     const platform = osPlat == 'win32' ? 'windows' : osPlat;
     const ext = osPlat == 'win32' ? '.exe' : '';
