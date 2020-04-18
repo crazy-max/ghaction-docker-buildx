@@ -67,14 +67,6 @@ Following inputs can be used as `step.with` keys
 |---------------|---------|-----------|------------------------------------|
 | `version`     | String  | `latest`  | Buildx version. Example: `v0.3.0`  |
 
-### environment variables
-
-The following [official docker environment variables](https://docs.docker.com/engine/reference/commandline/cli/#environment-variables) are supported:
-
-| Name            | Type    | Default      | Description                                    |
-|-----------------|---------|-------------|-------------------------------------------------|
-| `DOCKER_CONFIG` | String  | `~/.docker` | The location of your client configuration files |
-
 ### outputs
 
 Following outputs are available
@@ -82,6 +74,14 @@ Following outputs are available
 | Name          | Type    | Description                           |
 |---------------|---------|---------------------------------------|
 | `platforms`   | String  | Available platforms (comma separated) |
+
+### environment variables
+
+The following [official docker environment variables](https://docs.docker.com/engine/reference/commandline/cli/#environment-variables) are supported:
+
+| Name            | Type    | Default      | Description                                    |
+|-----------------|---------|-------------|-------------------------------------------------|
+| `DOCKER_CONFIG` | String  | `~/.docker` | The location of your client configuration files |
 
 ## Limitation
 
