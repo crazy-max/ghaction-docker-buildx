@@ -35,8 +35,7 @@ export async function getBuildx(version: string, dockerConfigHome: string): Prom
 function getFileName(version: string): string {
   const platform: string = osPlat == 'win32' ? 'windows' : osPlat;
   const ext: string = osPlat == 'win32' ? '.exe' : '';
-  const filename: string = util.format('buildx-%s.%s-amd64%s', version, platform, ext);
-  return filename;
+  return util.format('buildx-%s.%s-amd64%s', version, platform, ext);
 }
 
 interface GitHubRelease {
