@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.5.0 (2020/04/30)
+
+* Add `qemu-version` input
+* Deprecate `version` input. Use `buildx-version` instead
+* Use `actions/checkout@v2`
+* Bumps deps
+
 ## 1.4.0 (2020/04/18)
 
 * Support custom docker config home (#156)
