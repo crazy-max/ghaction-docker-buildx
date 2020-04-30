@@ -12,8 +12,6 @@ If you are interested, [check out](https://git.io/Je09Y) my other :octocat: GitH
 
 ## Usage
 
-Below is a simple snippet to use this action. A [live example](https://github.com/crazy-max/ghaction-docker-buildx/actions) is also available for this repository.
-
 ```yaml
 name: buildx
 
@@ -30,13 +28,14 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       -
         name: Set up Docker Buildx
         id: buildx
         uses: crazy-max/ghaction-docker-buildx@v1
         with:
-          version: latest
+          buildx-version: latest
+          qemu-version: latest
       -
         name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
@@ -62,9 +61,10 @@ jobs:
 
 Following inputs can be used as `step.with` keys
 
-| Name          | Type    | Default   | Description                        |
-|---------------|---------|-----------|------------------------------------|
-| `version`     | String  | `latest`  | Buildx version. Example: `v0.3.0`  |
+| Name             | Type    | Default   | Description                        |
+|------------------|---------|-----------|------------------------------------|
+| `buildx-version` | String  | `latest`  | [Buildx](https://github.com/docker/buildx) version. Example: `v0.3.0` |
+| `qemu-version`   | String  | `latest`  | [qemu-user-static](https://github.com/multiarch/qemu-user-static) version (Docker tag). Example: `4.2.0-7` |
 
 ### outputs
 
@@ -86,7 +86,7 @@ The following [official docker environment variables](https://docs.docker.com/en
 
 This action is only available for Linux [virtual environments](https://help.github.com/en/articles/virtual-environments-for-github-actions#supported-virtual-environments-and-hardware-resources).
 
-## How can I help ?
+## How can I help?
 
 All kinds of contributions are welcome :raised_hands:! The most basic way to show your support is to star :star2: the project, or to raise issues :speech_balloon: You can also support this project by [**becoming a sponsor on GitHub**](https://github.com/sponsors/crazy-max) :clap: or by making a [Paypal donation](https://www.paypal.me/crazyws) to ensure this journey continues indefinitely! :rocket:
 

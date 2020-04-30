@@ -14,9 +14,10 @@ async function run() {
       return;
     }
 
-    const version = core.getInput('version') || 'latest';
+    const buildxVer = core.getInput('version') || core.getInput('buildx-version') || 'latest';
+    const qemuVer = core.getInput('qemu-version') || 'latest';
     const dockerConfigHome: string = process.env.DOCKER_CONFIG || path.join(os.homedir(), '.docker');
-    await installer.getBuildx(version, dockerConfigHome);
+    await installer.getBuildx(buildxVer, dockerConfigHome);
 
     console.log('🐳 Docker info...');
     await exec.exec('docker', ['info']);
@@ -24,7 +25,10 @@ async function run() {
     console.log('ℹ️ Buildx info');
     await exec.exec('docker', ['buildx', 'version']);
 
-    console.log('💎 Installing qemu-user-static...');
+    console.log(`⬇️ Downloading qemu-user-static Docker image...`);
+    await exec.exec('docker', ['pull', '-q', `multiarch/qemu-user-static:${qemuVer}`]);
+
+    console.log(`💎 Installing QEMU static binaries...`);
     await exec.exec('docker', ['run', '--rm', '--privileged', 'multiarch/qemu-user-static', '--reset', '-p', 'yes']);
 
     console.log('🔨 Creating a new builder instance...');
