@@ -19,6 +19,9 @@ async function run() {
     const dockerConfigHome: string = process.env.DOCKER_CONFIG || path.join(os.homedir(), '.docker');
     await installer.getBuildx(buildxVer, dockerConfigHome);
 
+    core.info('📣 Buildx info');
+    await exec.exec('docker', ['buildx', 'version']);
+
     core.info(`⬇️ Downloading qemu-user-static Docker image...`);
     await exec.exec('docker', ['pull', '-q', `multiarch/qemu-user-static:${qemuVer}`]);
 
