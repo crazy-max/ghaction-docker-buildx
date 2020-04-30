@@ -5,7 +5,7 @@ import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import * as github from '@actions/github';
 import * as stateHelper from './state-helper';
-import path from "path";
+import path from 'path';
 
 async function run() {
   try {

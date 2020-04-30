@@ -1,7 +1,7 @@
 import fs = require('fs');
 import * as installer from '../src/installer';
-import * as path from "path";
-import * as os from "os";
+import * as path from 'path';
+import * as os from 'os';
 
 describe('installer', () => {
   it('acquires v0.2.2 version of buildx', async () => {
@@ -23,8 +23,6 @@ describe('installer', () => {
     await installer.getBuildx('latest', tmpDir);
 
     // Assert
-    expect(fs.existsSync(
-      path.join(tmpDir, 'cli-plugins', 'docker-buildx')
-    )).toBe(true);
+    expect(fs.existsSync(path.join(tmpDir, 'cli-plugins', 'docker-buildx'))).toBe(true);
   }, 100000);
 });

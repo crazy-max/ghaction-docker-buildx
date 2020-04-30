@@ -1,6 +1,5 @@
 [![GitHub release](https://img.shields.io/github/release/crazy-max/ghaction-docker-buildx.svg?style=flat-square)](https://github.com/crazy-max/ghaction-docker-buildx/releases/latest)
 [![GitHub marketplace](https://img.shields.io/badge/marketplace-docker--buildx-blue?logo=github&style=flat-square)](https://github.com/marketplace/actions/docker-buildx)
-[![Release workflow](https://github.com/crazy-max/ghaction-docker-buildx/workflows/release/badge.svg)](https://github.com/crazy-max/ghaction-docker-buildx/actions?workflow=release)
 [![Test workflow](https://github.com/crazy-max/ghaction-docker-buildx/workflows/test/badge.svg)](https://github.com/crazy-max/ghaction-docker-buildx/actions?workflow=test)
 [![Become a sponsor](https://img.shields.io/badge/sponsor-crazy--max-181717.svg?logo=github&style=flat-square)](https://github.com/sponsors/crazy-max)
 [![Paypal Donate](https://img.shields.io/badge/donate-paypal-00457c.svg?logo=paypal&style=flat-square)](https://www.paypal.me/crazyws)
