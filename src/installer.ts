@@ -1,9 +1,9 @@
 import * as download from 'download';
-import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import * as util from 'util';
 import * as restm from 'typed-rest-client/RestClient';
+import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 
 let osPlat: string = os.platform();
@@ -22,7 +22,7 @@ export async function getBuildx(version: string, dockerConfigHome: string): Prom
     getFileName(version)
   );
 
-  console.log(`⬇️ Downloading ${downloadUrl}...`);
+  core.info(`⬇️ Downloading ${downloadUrl}...`);
   await download.default(downloadUrl, cliPluginsDir, {filename: pluginName});
 
   if (osPlat !== 'win32') {

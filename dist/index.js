@@ -4968,15 +4968,11 @@ function run() {
             const qemuVer = core.getInput('qemu-version') || 'latest';
             const dockerConfigHome = process.env.DOCKER_CONFIG || path_1.default.join(os.homedir(), '.docker');
             yield installer.getBuildx(buildxVer, dockerConfigHome);
-            console.log('📣 Buildx info');
-            yield exec.exec('docker', ['buildx', 'version']);
-            console.log('🐳 Docker info');
-            yield exec.exec('docker', ['info']);
-            console.log(`⬇️ Downloading qemu-user-static Docker image...`);
+            core.info(`⬇️ Downloading qemu-user-static Docker image...`);
             yield exec.exec('docker', ['pull', '-q', `multiarch/qemu-user-static:${qemuVer}`]);
-            console.log(`💎 Installing QEMU static binaries...`);
+            core.info(`💎 Installing QEMU static binaries...`);
             yield exec.exec('docker', ['run', '--rm', '--privileged', 'multiarch/qemu-user-static', '--reset', '-p', 'yes']);
-            console.log('🔨 Creating a new builder instance...');
+            core.info('🔨 Creating a new builder instance...');
             yield exec.exec('docker', [
                 'buildx',
                 'create',
@@ -4986,9 +4982,11 @@ function run() {
                 'docker-container',
                 '--use'
             ]);
-            console.log('🏃 Booting builder...');
+            core.info('🏃 Booting builder...');
             yield exec.exec('docker', ['buildx', 'inspect', '--bootstrap']);
-            console.log('🛒 Extracting available platforms...');
+            core.info('🐳 Docker info');
+            yield exec.exec('docker', ['info']);
+            core.info('🛒 Extracting available platforms...');
             const inspect = child_process.execSync('docker buildx inspect', {
                 encoding: 'utf8'
             });
@@ -5007,7 +5005,7 @@ function run() {
 function cleanup() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            console.log('🚿 Removing builder instance...');
+            core.info('🚿 Removing builder instance...');
             yield exec.exec('docker', ['buildx', 'rm', `builder-${github.context.sha}`]);
         }
         catch (error) {
@@ -23910,6 +23908,7 @@ const os = __importStar(__webpack_require__(87));
 const path = __importStar(__webpack_require__(622));
 const util = __importStar(__webpack_require__(669));
 const restm = __importStar(__webpack_require__(105));
+const core = __importStar(__webpack_require__(470));
 const exec = __importStar(__webpack_require__(986));
 let osPlat = os.platform();
 function getBuildx(version, dockerConfigHome) {
@@ -23921,7 +23920,7 @@ function getBuildx(version, dockerConfigHome) {
         const cliPluginsDir = path.join(dockerConfigHome, 'cli-plugins');
         const pluginName = osPlat == 'win32' ? 'docker-buildx.exe' : 'docker-buildx';
         const downloadUrl = util.format('https://github.com/docker/buildx/releases/download/%s/%s', version, getFileName(version));
-        console.log(`⬇️ Downloading ${downloadUrl}...`);
+        core.info(`⬇️ Downloading ${downloadUrl}...`);
         yield download.default(downloadUrl, cliPluginsDir, { filename: pluginName });
         if (osPlat !== 'win32') {
             yield exec.exec('chmod', ['a+x', path.join(cliPluginsDir, pluginName)]);

@@ -19,19 +19,13 @@ async function run() {
     const dockerConfigHome: string = process.env.DOCKER_CONFIG || path.join(os.homedir(), '.docker');
     await installer.getBuildx(buildxVer, dockerConfigHome);
 
-    console.log('📣 Buildx info');
-    await exec.exec('docker', ['buildx', 'version']);
-
-    console.log('🐳 Docker info');
-    await exec.exec('docker', ['info']);
-
-    console.log(`⬇️ Downloading qemu-user-static Docker image...`);
+    core.info(`⬇️ Downloading qemu-user-static Docker image...`);
     await exec.exec('docker', ['pull', '-q', `multiarch/qemu-user-static:${qemuVer}`]);
 
-    console.log(`💎 Installing QEMU static binaries...`);
+    core.info(`💎 Installing QEMU static binaries...`);
     await exec.exec('docker', ['run', '--rm', '--privileged', 'multiarch/qemu-user-static', '--reset', '-p', 'yes']);
 
-    console.log('🔨 Creating a new builder instance...');
+    core.info('🔨 Creating a new builder instance...');
     await exec.exec('docker', [
       'buildx',
       'create',
@@ -42,10 +36,13 @@ async function run() {
       '--use'
     ]);
 
-    console.log('🏃 Booting builder...');
+    core.info('🏃 Booting builder...');
     await exec.exec('docker', ['buildx', 'inspect', '--bootstrap']);
 
-    console.log('🛒 Extracting available platforms...');
+    core.info('🐳 Docker info');
+    await exec.exec('docker', ['info']);
+
+    core.info('🛒 Extracting available platforms...');
     const inspect = child_process.execSync('docker buildx inspect', {
       encoding: 'utf8'
     });
@@ -62,7 +59,7 @@ async function run() {
 
 async function cleanup(): Promise<void> {
   try {
-    console.log('🚿 Removing builder instance...');
+    core.info('🚿 Removing builder instance...');
     await exec.exec('docker', ['buildx', 'rm', `builder-${github.context.sha}`]);
   } catch (error) {
     core.warning(error.message);
