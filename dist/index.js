@@ -4964,14 +4964,17 @@ function run() {
                 core.setFailed('Only supported on linux platform');
                 return;
             }
-            const version = core.getInput('version') || 'latest';
+            const buildxVer = core.getInput('version') || core.getInput('buildx-version') || 'latest';
+            const qemuVer = core.getInput('qemu-version') || 'latest';
             const dockerConfigHome = process.env.DOCKER_CONFIG || path_1.default.join(os.homedir(), '.docker');
-            yield installer.getBuildx(version, dockerConfigHome);
+            yield installer.getBuildx(buildxVer, dockerConfigHome);
             console.log('🐳 Docker info...');
             yield exec.exec('docker', ['info']);
             console.log('ℹ️ Buildx info');
             yield exec.exec('docker', ['buildx', 'version']);
-            console.log('💎 Installing qemu-user-static...');
+            console.log(`⬇️ Downloading qemu-user-static Docker image...`);
+            yield exec.exec('docker', ['pull', '-q', `multiarch/qemu-user-static:${qemuVer}`]);
+            console.log(`💎 Installing QEMU static binaries...`);
             yield exec.exec('docker', ['run', '--rm', '--privileged', 'multiarch/qemu-user-static', '--reset', '-p', 'yes']);
             console.log('🔨 Creating a new builder instance...');
             yield exec.exec('docker', [
