@@ -4100,7 +4100,7 @@ exports.IsPost = !!process.env['STATE_isPost'];
 if (!exports.IsPost) {
     coreCommand.issueCommand('save-state', { name: 'isPost' }, 'true');
 }
-
+//# sourceMappingURL=state-helper.js.map
 
 /***/ }),
 /* 154 */
@@ -5023,7 +5023,7 @@ if (!stateHelper.IsPost) {
 else {
     cleanup();
 }
-
+//# sourceMappingURL=main.js.map
 
 /***/ }),
 /* 199 */,
@@ -23977,7 +23977,7 @@ function determineVersion(version) {
         return res.result.tag_name;
     });
 }
-
+//# sourceMappingURL=installer.js.map
 
 /***/ }),
 /* 750 */,
