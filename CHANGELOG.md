@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.1 (2020/05/06)
+
+* Add Codecov
+* Bumps deps
+
 ## 1.5.0 (2020/04/30)
 
 * Add `qemu-version` input
