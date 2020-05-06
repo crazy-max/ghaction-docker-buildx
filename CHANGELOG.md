@@ -3,38 +3,38 @@
 ## 1.5.1 (2020/05/06)
 
 * Add Codecov
-* Bumps deps
+* Update deps
 
 ## 1.5.0 (2020/04/30)
 
 * Add `qemu-version` input
 * Deprecate `version` input. Use `buildx-version` instead
 * Use `actions/checkout@v2`
-* Bumps deps
+* Update deps
 
 ## 1.4.0 (2020/04/18)
 
 * Support custom docker config home (#156)
-* Bump deps
+* Update deps
 
 ## 1.3.0 (2020/04/09)
 
 * Use ncc and clean workflows
-* Bump deps
+* Update deps
 
 ## 1.2.1 (2020/03/29)
 
-* Bump deps
+* Update deps
 
 ## 1.2.0 (2020/03/22)
 
 * Use a unique name for the builder (#116)
-* Bump deps
+* Update deps
 
 ## 1.1.0 (2020/03/19)
 
 * Fix error on create (#114)
-* Bump deps
+* Update deps
 
 ## 1.0.5 (2019/12/20)
 
@@ -43,7 +43,7 @@
 
 ## 1.0.4 (2019/11/14)
 
-* Bump deps
+* Update deps
 
 ## 1.0.3 (2019/10/09)
 
@@ -51,7 +51,7 @@
 
 ## 1.0.2 (2019/10/04)
 
-* Bump deps
+* Update deps
 
 ## 1.0.1 (2019/10/04)
 
