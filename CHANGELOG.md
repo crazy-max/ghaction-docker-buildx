@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.6.0 (2020/05/07)
+
+* Use native GitHub Action tools to download assets and use GitHub API
+* Cleanup local paths from extra fields
+* Remove `@actions/github` module and use `GITHUB_SHA` env var instead
+* Audit packages
+
 ## 1.5.1 (2020/05/06)
 
 * Add Codecov
