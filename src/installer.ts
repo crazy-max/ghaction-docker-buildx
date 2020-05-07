@@ -25,8 +25,8 @@ export async function getBuildx(version: string, dockerConfigHome: string): Prom
 
   const downloadUrl = util.format(
     'https://github.com/docker/buildx/releases/download/%s/%s',
-    version,
-    getFilename(version)
+    release.tag_name,
+    getFilename(release.tag_name)
   );
 
   core.info(`⬇️ Downloading ${downloadUrl}...`);

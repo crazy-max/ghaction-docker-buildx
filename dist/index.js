@@ -4704,7 +4704,7 @@ function getBuildx(version, dockerConfigHome) {
         core.info(`✅ Buildx version found: ${release.tag_name}`);
         const pluginPath = path.join(dockerConfigHome, 'cli-plugins', osPlat == 'win32' ? 'docker-buildx.exe' : 'docker-buildx');
         core.debug(`Plugin path is ${pluginPath}`);
-        const downloadUrl = util.format('https://github.com/docker/buildx/releases/download/%s/%s', version, getFilename(version));
+        const downloadUrl = util.format('https://github.com/docker/buildx/releases/download/%s/%s', release.tag_name, getFilename(release.tag_name));
         core.info(`⬇️ Downloading ${downloadUrl}...`);
         const downloadPath = yield tc.downloadTool(downloadUrl, pluginPath);
         core.debug(`Downloaded to ${downloadPath}`);
