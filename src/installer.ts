@@ -1,58 +1,46 @@
-import * as download from 'download';
+import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import * as util from 'util';
-import * as restm from 'typed-rest-client/RestClient';
+import * as github from './github';
 import * as core from '@actions/core';
-import * as exec from '@actions/exec';
+import * as tc from '@actions/tool-cache';
 
 let osPlat: string = os.platform();
 
 export async function getBuildx(version: string, dockerConfigHome: string): Promise<string> {
-  const selected = await determineVersion(version);
-  if (selected) {
-    version = selected;
+  const release: github.GitHubRelease | null = await github.getRelease(version);
+  if (!release) {
+    throw new Error(`Cannot find buildx ${version} release`);
   }
 
-  const cliPluginsDir = path.join(dockerConfigHome, 'cli-plugins');
-  const pluginName = osPlat == 'win32' ? 'docker-buildx.exe' : 'docker-buildx';
+  core.info(`✅ Buildx version found: ${release.tag_name}`);
+
+  const pluginPath: string = path.join(
+    dockerConfigHome,
+    'cli-plugins',
+    osPlat == 'win32' ? 'docker-buildx.exe' : 'docker-buildx'
+  );
+  core.debug(`Plugin path is ${pluginPath}`);
+
   const downloadUrl = util.format(
     'https://github.com/docker/buildx/releases/download/%s/%s',
     version,
-    getFileName(version)
+    getFilename(version)
   );
 
   core.info(`⬇️ Downloading ${downloadUrl}...`);
-  await download.default(downloadUrl, cliPluginsDir, {filename: pluginName});
+  const downloadPath: string = await tc.downloadTool(downloadUrl, pluginPath);
+  core.debug(`Downloaded to ${downloadPath}`);
 
-  if (osPlat !== 'win32') {
-    await exec.exec('chmod', ['a+x', path.join(cliPluginsDir, pluginName)]);
-  }
+  core.info('🔨 Fixing perms...');
+  await fs.chmodSync(downloadPath, '0755');
 
-  return path.join(cliPluginsDir, pluginName);
+  return pluginPath;
 }
 
-function getFileName(version: string): string {
+const getFilename = (version: string): string => {
   const platform: string = osPlat == 'win32' ? 'windows' : osPlat;
   const ext: string = osPlat == 'win32' ? '.exe' : '';
   return util.format('buildx-%s.%s-amd64%s', version, platform, ext);
-}
-
-interface GitHubRelease {
-  tag_name: string;
-}
-
-async function determineVersion(version: string): Promise<string> {
-  let rest: restm.RestClient = new restm.RestClient('ghaction-docker-buildx', 'https://github.com', undefined, {
-    headers: {
-      Accept: 'application/json'
-    }
-  });
-
-  let res: restm.IRestResponse<GitHubRelease> = await rest.get<GitHubRelease>(`/docker/buildx/releases/${version}`);
-  if (res.statusCode != 200 || res.result === null) {
-    throw new Error(`Cannot find Docker buildx ${version} release (http ${res.statusCode})`);
-  }
-
-  return res.result.tag_name;
-}
+};

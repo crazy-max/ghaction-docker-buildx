@@ -1,21 +1,20 @@
-import * as installer from './installer';
 import * as child_process from 'child_process';
 import * as os from 'os';
+import * as path from 'path';
+import * as installer from './installer';
+import * as stateHelper from './state-helper';
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
-import * as github from '@actions/github';
-import * as stateHelper from './state-helper';
-import path from 'path';
 
-async function run() {
+async function run(): Promise<void> {
   try {
     if (os.platform() !== 'linux') {
       core.setFailed('Only supported on linux platform');
       return;
     }
 
-    const buildxVer = core.getInput('version') || core.getInput('buildx-version') || 'latest';
-    const qemuVer = core.getInput('qemu-version') || 'latest';
+    const buildxVer: string = core.getInput('version') || core.getInput('buildx-version') || 'latest';
+    const qemuVer: string = core.getInput('qemu-version') || 'latest';
     const dockerConfigHome: string = process.env.DOCKER_CONFIG || path.join(os.homedir(), '.docker');
     await installer.getBuildx(buildxVer, dockerConfigHome);
 
@@ -33,7 +32,7 @@ async function run() {
       'buildx',
       'create',
       '--name',
-      `builder-${github.context.sha}`,
+      `builder-${process.env.GITHUB_SHA}`,
       '--driver',
       'docker-container',
       '--use'
@@ -63,7 +62,7 @@ async function run() {
 async function cleanup(): Promise<void> {
   try {
     core.info('🚿 Removing builder instance...');
-    await exec.exec('docker', ['buildx', 'rm', `builder-${github.context.sha}`]);
+    await exec.exec('docker', ['buildx', 'rm', `builder-${process.env.GITHUB_SHA}`]);
   } catch (error) {
     core.warning(error.message);
   }
