@@ -11,6 +11,8 @@ GitHub Action to set up Docker [Buildx](https://github.com/docker/buildx).
 
 If you are interested, [check out](https://git.io/Je09Y) my other :octocat: GitHub Actions!
 
+![GitHub Action to set up Docker Buildx](.github/ghaction-docker-buildx.png)
+
 ## Usage
 
 ```yaml
