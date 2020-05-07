@@ -4709,7 +4709,7 @@ function getBuildx(version, dockerConfigHome) {
         const pluginsDir = path.join(dockerConfigHome, 'cli-plugins');
         core.debug(`Plugins dir is ${pluginsDir}`);
         if (!fs.existsSync(pluginsDir)) {
-            fs.mkdirSync(pluginsDir);
+            fs.mkdirSync(pluginsDir, { recursive: true });
         }
         const pluginPath = path.join(pluginsDir, osPlat == 'win32' ? 'docker-buildx.exe' : 'docker-buildx');
         core.debug(`Plugin path is ${pluginsDir}`);

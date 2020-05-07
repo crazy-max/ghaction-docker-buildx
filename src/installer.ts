@@ -28,7 +28,7 @@ export async function getBuildx(version: string, dockerConfigHome: string): Prom
   const pluginsDir: string = path.join(dockerConfigHome, 'cli-plugins');
   core.debug(`Plugins dir is ${pluginsDir}`);
   if (!fs.existsSync(pluginsDir)) {
-    fs.mkdirSync(pluginsDir);
+    fs.mkdirSync(pluginsDir, {recursive: true});
   }
 
   const pluginPath: string = path.join(pluginsDir, osPlat == 'win32' ? 'docker-buildx.exe' : 'docker-buildx');
