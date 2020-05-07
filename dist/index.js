@@ -4702,14 +4702,20 @@ function getBuildx(version, dockerConfigHome) {
             throw new Error(`Cannot find buildx ${version} release`);
         }
         core.info(`✅ Buildx version found: ${release.tag_name}`);
-        const pluginPath = path.join(dockerConfigHome, 'cli-plugins', osPlat == 'win32' ? 'docker-buildx.exe' : 'docker-buildx');
-        core.debug(`Plugin path is ${pluginPath}`);
         const downloadUrl = util.format('https://github.com/docker/buildx/releases/download/%s/%s', release.tag_name, getFilename(release.tag_name));
         core.info(`⬇️ Downloading ${downloadUrl}...`);
-        const downloadPath = yield tc.downloadTool(downloadUrl, pluginPath);
+        const downloadPath = yield tc.downloadTool(downloadUrl);
         core.debug(`Downloaded to ${downloadPath}`);
+        const pluginsDir = path.join(dockerConfigHome, 'cli-plugins');
+        core.debug(`Plugins dir is ${pluginsDir}`);
+        if (!fs.existsSync(pluginsDir)) {
+            fs.mkdirSync(pluginsDir);
+        }
+        const pluginPath = path.join(pluginsDir, osPlat == 'win32' ? 'docker-buildx.exe' : 'docker-buildx');
+        core.debug(`Plugin path is ${pluginsDir}`);
+        fs.renameSync(downloadPath, pluginPath);
         core.info('🔨 Fixing perms...');
-        yield fs.chmodSync(downloadPath, '0755');
+        fs.chmodSync(pluginPath, '0755');
         return pluginPath;
     });
 }

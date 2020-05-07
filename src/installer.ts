@@ -15,14 +15,6 @@ export async function getBuildx(version: string, dockerConfigHome: string): Prom
   }
 
   core.info(`✅ Buildx version found: ${release.tag_name}`);
-
-  const pluginPath: string = path.join(
-    dockerConfigHome,
-    'cli-plugins',
-    osPlat == 'win32' ? 'docker-buildx.exe' : 'docker-buildx'
-  );
-  core.debug(`Plugin path is ${pluginPath}`);
-
   const downloadUrl = util.format(
     'https://github.com/docker/buildx/releases/download/%s/%s',
     release.tag_name,
@@ -30,11 +22,21 @@ export async function getBuildx(version: string, dockerConfigHome: string): Prom
   );
 
   core.info(`⬇️ Downloading ${downloadUrl}...`);
-  const downloadPath: string = await tc.downloadTool(downloadUrl, pluginPath);
+  const downloadPath: string = await tc.downloadTool(downloadUrl);
   core.debug(`Downloaded to ${downloadPath}`);
 
+  const pluginsDir: string = path.join(dockerConfigHome, 'cli-plugins');
+  core.debug(`Plugins dir is ${pluginsDir}`);
+  if (!fs.existsSync(pluginsDir)) {
+    fs.mkdirSync(pluginsDir);
+  }
+
+  const pluginPath: string = path.join(pluginsDir, osPlat == 'win32' ? 'docker-buildx.exe' : 'docker-buildx');
+  core.debug(`Plugin path is ${pluginsDir}`);
+  fs.renameSync(downloadPath, pluginPath);
+
   core.info('🔨 Fixing perms...');
-  await fs.chmodSync(downloadPath, '0755');
+  fs.chmodSync(pluginPath, '0755');
 
   return pluginPath;
 }
