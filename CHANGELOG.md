@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.1 (2020/05/08)
+
+* Typo
+
 ## 1.6.0 (2020/05/07)
 
 * Use native GitHub Action tools to download assets and use GitHub API

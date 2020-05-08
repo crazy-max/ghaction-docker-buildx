@@ -4761,7 +4761,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const httpm = __importStar(__webpack_require__(539));
 exports.getRelease = (version) => __awaiter(void 0, void 0, void 0, function* () {
     const url = `https://github.com/docker/buildx/releases/${version}`;
-    const http = new httpm.HttpClient('ghaction-hugo');
+    const http = new httpm.HttpClient('ghaction-docker-buildx');
     return (yield http.getJson(url)).result;
 });
 //# sourceMappingURL=github.js.map
