@@ -15,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        # https://github.com/actions/checkout
         name: Checkout
         uses: actions/checkout@v2
       -
@@ -28,7 +27,6 @@ jobs:
         name: Audit packages
         run: npm audit --audit-level=high
       -
-        # https://github.com/codecov/codecov-action
         name: Upload coverage
         uses: codecov/codecov-action@v1
         if: success()
