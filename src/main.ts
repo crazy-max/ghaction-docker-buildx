@@ -13,7 +13,7 @@ async function run(): Promise<void> {
       return;
     }
 
-    const buildxVer: string = core.getInput('version') || core.getInput('buildx-version') || 'latest';
+    const buildxVer: string = core.getInput('buildx-version') || core.getInput('version') || 'latest';
     const qemuVer: string = core.getInput('qemu-version') || 'latest';
     const dockerConfigHome: string = process.env.DOCKER_CONFIG || path.join(os.homedir(), '.docker');
     await installer.getBuildx(buildxVer, dockerConfigHome);
