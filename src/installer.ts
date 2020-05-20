@@ -33,7 +33,7 @@ export async function getBuildx(version: string, dockerConfigHome: string): Prom
 
   const pluginPath: string = path.join(pluginsDir, osPlat == 'win32' ? 'docker-buildx.exe' : 'docker-buildx');
   core.debug(`Plugin path is ${pluginsDir}`);
-  fs.renameSync(downloadPath, pluginPath);
+  fs.copyFileSync(downloadPath, pluginPath);
 
   core.info('🔨 Fixing perms...');
   fs.chmodSync(pluginPath, '0755');
