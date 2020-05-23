@@ -3,6 +3,7 @@
 ## 1.6.2 (2020/05/20)
 
 * Fix rename across "device" (partition) boundaries (#194)
+* Update deps
 
 ## 1.6.1 (2020/05/08)
 
