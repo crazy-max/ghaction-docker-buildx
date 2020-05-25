@@ -28,7 +28,7 @@ jobs:
         name: Runner info
         run: |
           sudo apt-get install -y hwinfo
-          sudo hwinfo
+          sudo hwinfo --short
           sudo mount
       -
         name: Checkout
