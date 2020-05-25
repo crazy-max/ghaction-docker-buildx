@@ -26,7 +26,7 @@ jobs:
     steps:
       -
         name: Runner info
-        uses: |
+        run: |
           sudo apt-get install inxi
           sudo inxi -F -v 6
       -
