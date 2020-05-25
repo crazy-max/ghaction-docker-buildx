@@ -27,8 +27,9 @@ jobs:
       -
         name: Runner info
         run: |
-          sudo apt-get install inxi
-          sudo inxi -F -v 6
+          sudo apt-get install -y hwinfo
+          sudo hwinfo
+          sudo mount
       -
         name: Checkout
         uses: actions/checkout@v2
