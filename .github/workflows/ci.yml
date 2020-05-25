@@ -25,6 +25,11 @@ jobs:
           - 4.2.0-7
     steps:
       -
+        name: Runner info
+        uses: |
+          sudo apt-get install inxi
+          sudo inxi -F -v 6
+      -
         name: Checkout
         uses: actions/checkout@v2
       -
