@@ -2978,7 +2978,7 @@ function run() {
                 core.setFailed('Only supported on linux platform');
                 return;
             }
-            const buildxVer = core.getInput('buildx-version') || core.getInput('version') || 'latest';
+            const buildxVer = core.getInput('buildx-version') || 'latest';
             const skipCache = /true/i.test(core.getInput('skip-cache'));
             const qemuVer = core.getInput('qemu-version') || 'latest';
             const dockerConfigHome = process.env.DOCKER_CONFIG || path.join(os.homedir(), '.docker');
