@@ -19,10 +19,6 @@ inputs:
     description: 'QEMU static binaries Docker image version. Example: 4.2.0-7'
     default: 'latest'
     required: false
-  version:
-    description: 'Deprecated. Use buildx-version instead. Will not be supported after May 30, 2020'
-    deprecationMessage: 'The version input will not be supported after May 30, 2020. Use buildx-version instead'
-    required: false
 
 outputs:
   platforms:
