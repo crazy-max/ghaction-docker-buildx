@@ -3649,10 +3649,10 @@ const cache = __importStar(__webpack_require__(692));
 const path_1 = __importDefault(__webpack_require__(622));
 const cacheKeyPrefix = `ghaction-docker-buildx-${process.env['RUNNER_OS']}`;
 exports.getCachePath = () => {
-    if (!process.env.RUNNER_TOOL_CACHE) {
-        throw new Error('Expected RUNNER_TOOL_CACHE to be defined');
+    if (!process.env.RUNNER_TEMP) {
+        throw new Error('Expected RUNNER_TEMP to be defined');
     }
-    return path_1.default.join(process.env.RUNNER_TOOL_CACHE, 'ghaction-docker-buildx');
+    return path_1.default.join(process.env.RUNNER_TEMP, 'ghaction-docker-buildx');
 };
 exports.restoreCache = (version) => __awaiter(void 0, void 0, void 0, function* () {
     return yield cache.restoreCache([exports.getCachePath()], `${cacheKeyPrefix}-${version}`, [`${cacheKeyPrefix}-${version}`]);
