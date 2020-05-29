@@ -25,6 +25,7 @@ jobs:
         name: Test
         run: |
           env|sort > .env
+          cat .env
           npm run test
       -
         name: Audit packages
