@@ -1,7 +1,7 @@
 import * as cache from '@actions/cache';
 import path from 'path';
 
-const cacheKeyPrefix = `ghaction-docker-buildx-${process.env['RUNNER_OS']}-`;
+const cacheKeyPrefix = `ghaction-docker-buildx-${process.env['RUNNER_OS']}`;
 
 export const getCachePath = (): string => {
   if (!process.env.RUNNER_TOOL_CACHE) {
@@ -11,7 +11,7 @@ export const getCachePath = (): string => {
 };
 
 export const restoreCache = async (version: string): Promise<string | undefined> => {
-  return await cache.restoreCache([getCachePath()], `${cacheKeyPrefix}-${version}`, [cacheKeyPrefix]);
+  return await cache.restoreCache([getCachePath()], `${cacheKeyPrefix}-${version}`, [`${cacheKeyPrefix}-${version}`]);
 };
 
 export const saveCache = async (version: string): Promise<number> => {

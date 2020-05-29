@@ -46,9 +46,7 @@ export async function getBuildx(version: string, dockerConfigHome: string): Prom
   core.info('🔨 Fixing perms...');
   fs.chmodSync(pluginPath, '0755');
 
-  const cacheId = await cache.saveCache(version);
-  core.info(`💾 Cache saved with ID ${cacheId}`);
-
+  await cache.saveCache(version);
   return pluginPath;
 }
 
