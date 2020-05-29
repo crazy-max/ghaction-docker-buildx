@@ -7,13 +7,13 @@ const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ghaction-docker-buildx-'))
 
 describe('installer', () => {
   it('acquires v0.2.2 version of buildx', async () => {
-    const buildx = await installer.getBuildx('v0.2.2', tmpDir);
+    const buildx = await installer.getBuildx('v0.2.2', true, tmpDir);
     console.log(buildx);
     expect(fs.existsSync(buildx)).toBe(true);
   }, 100000);
 
   it('acquires latest version of buildx', async () => {
-    const buildx = await installer.getBuildx('latest', tmpDir);
+    const buildx = await installer.getBuildx('latest', true, tmpDir);
     console.log(buildx);
     expect(fs.existsSync(buildx)).toBe(true);
   }, 100000);

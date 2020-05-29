@@ -11,6 +11,10 @@ inputs:
     description: 'Buildx version. Example: v0.3.0'
     default: 'latest'
     required: false
+  skip-cache:
+    description: 'Skip cache of Buildx binary'
+    default: 'false'
+    required: false
   qemu-version:
     description: 'QEMU static binaries Docker image version. Example: 4.2.0-7'
     default: 'latest'

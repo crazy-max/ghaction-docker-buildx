@@ -2979,9 +2979,10 @@ function run() {
                 return;
             }
             const buildxVer = core.getInput('buildx-version') || core.getInput('version') || 'latest';
+            const skipCache = /true/i.test(core.getInput('skip-cache'));
             const qemuVer = core.getInput('qemu-version') || 'latest';
             const dockerConfigHome = process.env.DOCKER_CONFIG || path.join(os.homedir(), '.docker');
-            yield installer.getBuildx(buildxVer, dockerConfigHome);
+            yield installer.getBuildx(buildxVer, skipCache, dockerConfigHome);
             core.info('📣 Buildx info');
             yield exec.exec('docker', ['buildx', 'version']);
             core.info(`⬇️ Downloading qemu-user-static Docker image...`);
@@ -3654,14 +3655,14 @@ exports.getCachePath = () => {
     }
     return path_1.default.join(process.env.RUNNER_TOOL_CACHE, 'ghaction-docker-buildx');
 };
-exports.restoreCache = (version) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!process.env.ACTIONS_RUNTIME_URL) {
+exports.restoreCache = (version, skipCache) => __awaiter(void 0, void 0, void 0, function* () {
+    if (skipCache || !process.env.ACTIONS_RUNTIME_URL) {
         return undefined;
     }
     return yield cache.restoreCache([exports.getCachePath()], `${cacheKeyPrefix}-${version}`, [cacheKeyPrefix]);
 });
-exports.saveCache = (version) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!process.env.ACTIONS_RUNTIME_URL) {
+exports.saveCache = (version, skipCache) => __awaiter(void 0, void 0, void 0, function* () {
+    if (skipCache || !process.env.ACTIONS_RUNTIME_URL) {
         return 0;
     }
     return yield cache.saveCache([exports.getCachePath()], `${cacheKeyPrefix}-${version}`);
@@ -7634,7 +7635,7 @@ const github = __importStar(__webpack_require__(824));
 const core = __importStar(__webpack_require__(470));
 const tc = __importStar(__webpack_require__(533));
 const osPlat = os.platform();
-function getBuildx(version, dockerConfigHome) {
+function getBuildx(version, skipCache, dockerConfigHome) {
     return __awaiter(this, void 0, void 0, function* () {
         const release = yield github.getRelease(version);
         if (!release) {
@@ -7642,13 +7643,13 @@ function getBuildx(version, dockerConfigHome) {
         }
         core.info(`✅ Buildx version found: ${release.tag_name}`);
         const downloadPath = path.join(cache.getCachePath(), `buildx-${release.tag_name}`);
-        const cacheKey = yield cache.restoreCache(release.tag_name);
+        const cacheKey = yield cache.restoreCache(release.tag_name, skipCache);
         if (cacheKey == undefined) {
             const downloadUrl = util.format('https://github.com/docker/buildx/releases/download/%s/%s', release.tag_name, getFilename(release.tag_name));
             core.info(`⬇️ Downloading ${downloadUrl}...`);
             yield tc.downloadTool(downloadUrl, downloadPath);
             core.debug(`Downloaded to ${downloadPath}`);
-            yield cache.saveCache(release.tag_name);
+            yield cache.saveCache(release.tag_name, skipCache);
         }
         else {
             core.info(`♻️ Cache restored from key ${cacheKey}`);

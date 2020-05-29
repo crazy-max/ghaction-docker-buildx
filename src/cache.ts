@@ -10,15 +10,15 @@ export const getCachePath = (): string => {
   return path.join(process.env.RUNNER_TOOL_CACHE, 'ghaction-docker-buildx');
 };
 
-export const restoreCache = async (version: string): Promise<string | undefined> => {
-  if (!process.env.ACTIONS_RUNTIME_URL) {
+export const restoreCache = async (version: string, skipCache: boolean): Promise<string | undefined> => {
+  if (skipCache || !process.env.ACTIONS_RUNTIME_URL) {
     return undefined;
   }
   return await cache.restoreCache([getCachePath()], `${cacheKeyPrefix}-${version}`, [cacheKeyPrefix]);
 };
 
-export const saveCache = async (version: string): Promise<number> => {
-  if (!process.env.ACTIONS_RUNTIME_URL) {
+export const saveCache = async (version: string, skipCache: boolean): Promise<number> => {
+  if (skipCache || !process.env.ACTIONS_RUNTIME_URL) {
     return 0;
   }
   return await cache.saveCache([getCachePath()], `${cacheKeyPrefix}-${version}`);

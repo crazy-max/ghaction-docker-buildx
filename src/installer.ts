@@ -9,7 +9,7 @@ import * as tc from '@actions/tool-cache';
 
 const osPlat: string = os.platform();
 
-export async function getBuildx(version: string, dockerConfigHome: string): Promise<string> {
+export async function getBuildx(version: string, skipCache: boolean, dockerConfigHome: string): Promise<string> {
   const release: github.GitHubRelease | null = await github.getRelease(version);
   if (!release) {
     throw new Error(`Cannot find buildx ${version} release`);
@@ -18,7 +18,7 @@ export async function getBuildx(version: string, dockerConfigHome: string): Prom
 
   const downloadPath: string = path.join(cache.getCachePath(), `buildx-${release.tag_name}`);
 
-  const cacheKey = await cache.restoreCache(release.tag_name);
+  const cacheKey = await cache.restoreCache(release.tag_name, skipCache);
   if (cacheKey == undefined) {
     const downloadUrl = util.format(
       'https://github.com/docker/buildx/releases/download/%s/%s',
@@ -30,7 +30,7 @@ export async function getBuildx(version: string, dockerConfigHome: string): Prom
     await tc.downloadTool(downloadUrl, downloadPath);
     core.debug(`Downloaded to ${downloadPath}`);
 
-    await cache.saveCache(release.tag_name);
+    await cache.saveCache(release.tag_name, skipCache);
   } else {
     core.info(`♻️ Cache restored from key ${cacheKey}`);
   }
