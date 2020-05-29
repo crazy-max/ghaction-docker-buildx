@@ -3649,13 +3649,13 @@ const cache = __importStar(__webpack_require__(692));
 const path_1 = __importDefault(__webpack_require__(622));
 const cacheKeyPrefix = `ghaction-docker-buildx-${process.env['RUNNER_OS']}`;
 exports.getCachePath = () => {
-    if (!process.env.RUNNER_TEMP) {
-        throw new Error('Expected RUNNER_TEMP to be defined');
+    if (!process.env.RUNNER_TOOL_CACHE) {
+        throw new Error('Expected RUNNER_TOOL_CACHE to be defined');
     }
-    return path_1.default.join(process.env.RUNNER_TEMP, 'ghaction-docker-buildx');
+    return path_1.default.join(process.env.RUNNER_TOOL_CACHE, 'ghaction-docker-buildx');
 };
 exports.restoreCache = (version) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield cache.restoreCache([exports.getCachePath()], `${cacheKeyPrefix}-${version}`, [`${cacheKeyPrefix}-${version}`]);
+    return yield cache.restoreCache([exports.getCachePath()], `${cacheKeyPrefix}-${version}`, [cacheKeyPrefix]);
 });
 exports.saveCache = (version) => __awaiter(void 0, void 0, void 0, function* () {
     return yield cache.saveCache([exports.getCachePath()], `${cacheKeyPrefix}-${version}`);
@@ -7642,6 +7642,7 @@ function getBuildx(version, dockerConfigHome) {
             core.info(`⬇️ Downloading ${downloadUrl}...`);
             yield tc.downloadTool(downloadUrl, downloadPath);
             core.debug(`Downloaded to ${downloadPath}`);
+            yield cache.saveCache(version);
         }
         else {
             core.info(`♻️ Cache restored from key ${cacheKey}`);
@@ -7656,7 +7657,6 @@ function getBuildx(version, dockerConfigHome) {
         fs.copyFileSync(downloadPath, pluginPath);
         core.info('🔨 Fixing perms...');
         fs.chmodSync(pluginPath, '0755');
-        yield cache.saveCache(version);
         return pluginPath;
     });
 }

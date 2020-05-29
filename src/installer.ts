@@ -29,6 +29,8 @@ export async function getBuildx(version: string, dockerConfigHome: string): Prom
     core.info(`⬇️ Downloading ${downloadUrl}...`);
     await tc.downloadTool(downloadUrl, downloadPath);
     core.debug(`Downloaded to ${downloadPath}`);
+
+    await cache.saveCache(version);
   } else {
     core.info(`♻️ Cache restored from key ${cacheKey}`);
   }
@@ -46,7 +48,6 @@ export async function getBuildx(version: string, dockerConfigHome: string): Prom
   core.info('🔨 Fixing perms...');
   fs.chmodSync(pluginPath, '0755');
 
-  await cache.saveCache(version);
   return pluginPath;
 }
 
