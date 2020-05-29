@@ -30,7 +30,7 @@ export async function getBuildx(version: string, dockerConfigHome: string): Prom
     await tc.downloadTool(downloadUrl, downloadPath);
     core.debug(`Downloaded to ${downloadPath}`);
 
-    await cache.saveCache(version);
+    await cache.saveCache(release.tag_name);
   } else {
     core.info(`♻️ Cache restored from key ${cacheKey}`);
   }

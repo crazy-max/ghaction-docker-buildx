@@ -7642,7 +7642,7 @@ function getBuildx(version, dockerConfigHome) {
             core.info(`⬇️ Downloading ${downloadUrl}...`);
             yield tc.downloadTool(downloadUrl, downloadPath);
             core.debug(`Downloaded to ${downloadPath}`);
-            yield cache.saveCache(version);
+            yield cache.saveCache(release.tag_name);
         }
         else {
             core.info(`♻️ Cache restored from key ${cacheKey}`);
