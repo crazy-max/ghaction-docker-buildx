@@ -23,7 +23,9 @@ jobs:
         run: npm install
       -
         name: Test
-        run: npm run test
+        run: |
+          env|sort
+          npm run test
       -
         name: Audit packages
         run: npm audit --audit-level=high
