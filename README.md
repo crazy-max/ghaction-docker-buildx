@@ -35,7 +35,7 @@ jobs:
       -
         name: Set up Docker Buildx
         id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v1
+        uses: crazy-max/ghaction-docker-buildx@v2
         with:
           buildx-version: latest
           skip-cache: false

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.0 (2020/05/29)
+
+* Add cache implementation (#183)
+* Remove `version` input.
+
 ## 1.6.2 (2020/05/20)
 
 * Fix rename across "device" (partition) boundaries (#194)
