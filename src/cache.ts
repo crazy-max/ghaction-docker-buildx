@@ -11,9 +11,15 @@ export const getCachePath = (): string => {
 };
 
 export const restoreCache = async (version: string): Promise<string | undefined> => {
+  if (!process.env.ACTIONS_RUNTIME_URL) {
+    return undefined;
+  }
   return await cache.restoreCache([getCachePath()], `${cacheKeyPrefix}-${version}`, [cacheKeyPrefix]);
 };
 
 export const saveCache = async (version: string): Promise<number> => {
+  if (!process.env.ACTIONS_RUNTIME_URL) {
+    return 0;
+  }
   return await cache.saveCache([getCachePath()], `${cacheKeyPrefix}-${version}`);
 };

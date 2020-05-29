@@ -3655,9 +3655,15 @@ exports.getCachePath = () => {
     return path_1.default.join(process.env.RUNNER_TOOL_CACHE, 'ghaction-docker-buildx');
 };
 exports.restoreCache = (version) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!process.env.ACTIONS_RUNTIME_URL) {
+        return undefined;
+    }
     return yield cache.restoreCache([exports.getCachePath()], `${cacheKeyPrefix}-${version}`, [cacheKeyPrefix]);
 });
 exports.saveCache = (version) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!process.env.ACTIONS_RUNTIME_URL) {
+        return 0;
+    }
     return yield cache.saveCache([exports.getCachePath()], `${cacheKeyPrefix}-${version}`);
 });
 //# sourceMappingURL=cache.js.map

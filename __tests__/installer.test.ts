@@ -6,8 +6,6 @@ import * as os from 'os';
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ghaction-docker-buildx-'));
 
 describe('installer', () => {
-  console.log(process.env);
-
   it('acquires v0.2.2 version of buildx', async () => {
     const buildx = await installer.getBuildx('v0.2.2', tmpDir);
     console.log(buildx);
