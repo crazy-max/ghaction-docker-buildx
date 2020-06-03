@@ -13,7 +13,25 @@ If you are interested, [check out](https://git.io/Je09Y) my other :octocat: GitH
 
 ![GitHub Action to set up Docker Buildx](.github/ghaction-docker-buildx.png)
 
+___
+
+* [Usage](#usage)
+  * [Quick start](#quick-start)
+  * [Build and push to DockerHub](#build-and-push-to-dockerhub)
+* [Projects using this action](#projects-using-this-action)
+* [Customizing](#customizing)
+  * [inputs](#inputs)
+  * [outputs](#outputs)
+  * [environment variables](#environment-variables)
+* [Limitation](#limitation)
+* [How can I help?](#how-can-i-help)
+* [License](#license)
+
 ## Usage
+
+### Quick start
+
+Here is a simple example to build a Docker image with buildx (BuildKit)
 
 ```yaml
 name: buildx
@@ -50,6 +68,94 @@ jobs:
             --platform linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x \
             --output "type=image,push=false" \
             --file ./test/Dockerfile ./test
+```
+
+### Build and push to DockerHub
+
+Another example to build and push [Diun](https://github.com/crazy-max/diun) Docker image on DockerHub.
+
+* On `push` event, Docker image `crazymax/diun:edge` is **built** and **pushed** on DockerHub.
+* On `pull_request` event, Docker image `crazymax/diun:edge` is **built**.
+* On `schedule` event, Docker image `crazymax/diun:nightly` is **built** and **pushed** on DockerHub.
+* On `push tags` event, Docker image `crazymax/diun:<version>` and `crazymax/diun:latest` is **built** and **pushed** on DockerHub.
+
+```yaml
+name: buildx
+
+on:
+  schedule:
+    - cron: '0 10 * * *' # everyday at 10am
+  pull_request:
+    branches: master
+  push:
+    branches: master
+    tags:
+      - v*
+
+jobs:
+  buildx:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Prepare
+        id: prepare
+        run: |
+          DOCKER_IMAGE=crazymax/diun
+          DOCKER_PLATFORMS=linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/386,linux/ppc64le,linux/s390x
+          VERSION=edge
+
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+          fi
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            VERSION=nightly
+          fi
+
+          TAGS="--tag ${DOCKER_IMAGE}:${VERSION}"
+          if [[ $VERSION =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+            TAGS="$TAGS --tag ${DOCKER_IMAGE}:latest"
+          fi
+
+          echo ::set-output name=docker_image::${DOCKER_IMAGE}
+          echo ::set-output name=version::${VERSION}
+          echo ::set-output name=buildx_args::--platform ${DOCKER_PLATFORMS} \
+            --build-arg VERSION=${VERSION} \
+            --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
+            --build-arg VCS_REF=${GITHUB_SHA::8} \
+            ${TAGS} --file ./test/Dockerfile ./test
+      -
+        name: Set up Docker Buildx
+        uses: crazy-max/ghaction-docker-buildx@v2
+      -
+        name: Docker Buildx (build)
+        run: |
+          docker buildx build --output "type=image,push=false" ${{ steps.prepare.outputs.buildx_args }}
+      -
+        name: Docker Login
+        if: success() && github.event_name != 'pull_request'
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+      -
+        name: Docker Buildx (push)
+        if: success() && github.event_name != 'pull_request'
+        run: |
+          docker buildx build --output "type=image,push=true" ${{ steps.prepare.outputs.buildx_args }}
+      -
+        name: Docker Check Manifest
+        if: always() && github.event_name != 'pull_request'
+        run: |
+          docker run --rm mplatform/mquery ${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }}
+      -
+        name: Clear
+        if: always() && github.event_name != 'pull_request'
+        run: |
+          rm -f ${HOME}/.docker/config.json
 ```
 
 ## Projects using this action
