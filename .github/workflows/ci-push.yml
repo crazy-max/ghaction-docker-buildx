@@ -3,12 +3,15 @@ name: ci-push
 on:
   schedule:
     - cron: '0 10 * * *' # everyday at 10am
-  pull_request:
-    branches: master
   push:
     branches: master
+    paths-ignore:
+      - '**.md'
     tags:
       - v*
+  pull_request:
+    paths-ignore:
+      - '**.md'
 
 jobs:
   ci-push:
