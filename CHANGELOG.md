@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.1 (2020/06/03)
+
+* Leverage buildx cache example
+* Build and push to DockerHub example
+* Update deps
+
 ## 2.0.0 (2020/05/29)
 
 * Add cache implementation (#183)
