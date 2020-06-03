@@ -30,13 +30,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
       -
-        name: Tree buildx-cache
-        run: |
-          sudo apt-get install tree
-          mkdir -p /tmp/.buildx-cache
-          cd /tmp/.buildx-cache
-          tree -f --du 
-      -
         name: Docker Buildx (build)
         run: |
           docker buildx build \
@@ -46,11 +39,6 @@ jobs:
             --output "type=image,push=false" \
             --tag crazymax/ghaction-docker-buildx:cache \
             --file ./test/Dockerfile-diun ./test
-      -
-        name: Tree buildx-cache
-        run: |
-          cd /tmp/.buildx-cache
-          tree -f --du
       -
         name: Docker Login
         if: success() && github.event_name != 'pull_request'
