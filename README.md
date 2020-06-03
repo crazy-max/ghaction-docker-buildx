@@ -18,6 +18,7 @@ ___
 * [Usage](#usage)
   * [Quick start](#quick-start)
   * [Build and push to DockerHub](#build-and-push-to-dockerhub)
+  * [Leverage buildx cache](#leverage-buildx-cache)
 * [Projects using this action](#projects-using-this-action)
 * [Customizing](#customizing)
   * [inputs](#inputs)
@@ -154,6 +155,75 @@ jobs:
       -
         name: Clear
         if: always() && github.event_name != 'pull_request'
+        run: |
+          rm -f ${HOME}/.docker/config.json
+```
+
+### Leverage buildx cache
+
+You can leverage cache using [@actions/cache](https://github.com/actions/cache) with this action.
+
+```yaml
+name: buildx
+
+on:
+  pull_request:
+    branches: master
+  push:
+    branches: master
+
+jobs:
+  buildx:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up Docker Buildx
+        uses: crazy-max/ghaction-docker-buildx@v2
+      -
+        name: Cache Docker layers
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      -
+        name: Docker Buildx (build)
+        run: |
+          docker buildx build \
+            --cache-from "type=local,src=/tmp/.buildx-cache" \
+            --cache-to "type=local,dest=/tmp/.buildx-cache" \
+            --platform linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x \
+            --output "type=image,push=false" \
+            --tag crazymax/diun:latest \
+            --file ./Dockerfile-diun ./
+      -
+        name: Docker Login
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+      -
+        name: Docker Buildx (push)
+        run: |
+          docker buildx build \
+            --cache-from "type=local,src=/tmp/.buildx-cache" \
+            --platform linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x \
+            --output "type=image,push=true" \
+            --tag crazymax/diun:latest \
+            --file ./Dockerfile-diun ./
+      -
+        name: Docker Check Manifest
+        run: |
+          docker run --rm mplatform/mquery crazymax/diun:latest
+      -
+        name: Clear
+        if: always()
         run: |
           rm -f ${HOME}/.docker/config.json
 ```
