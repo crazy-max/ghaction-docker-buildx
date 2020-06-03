@@ -49,7 +49,7 @@ jobs:
             ${TAGS} --file ./test/Dockerfile ./test
       -
         name: Set up Docker Buildx
-        uses: crazy-max/ghaction-docker-buildx@v2
+        uses: ./
       -
         name: Docker Buildx (build)
         run: |
