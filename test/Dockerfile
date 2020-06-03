@@ -1,4 +1,6 @@
-FROM --platform=$TARGETPLATFORM alpine
+FROM --platform=$BUILDPLATFORM golang:alpine AS build
 ARG TARGETPLATFORM
-RUN echo "I'm building for $TARGETPLATFORM"
-RUN uname -a
+ARG BUILDPLATFORM
+RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM" > /log
+FROM alpine
+COPY --from=build /log /log
