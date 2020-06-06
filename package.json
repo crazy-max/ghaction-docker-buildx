@@ -22,11 +22,11 @@
   "author": "CrazyMax",
   "license": "MIT",
   "dependencies": {
-    "@actions/cache": "^0.2.1",
     "@actions/core": "^1.2.4",
     "@actions/exec": "^1.0.4",
     "@actions/http-client": "^1.0.8",
-    "@actions/tool-cache": "^1.5.5"
+    "@actions/tool-cache": "^1.5.5",
+    "semver": "^7.3.2"
   },
   "devDependencies": {
     "@types/jest": "^25.2.3",

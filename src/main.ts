@@ -14,10 +14,9 @@ async function run(): Promise<void> {
     }
 
     const buildxVer: string = core.getInput('buildx-version') || 'latest';
-    const skipCache: boolean = /true/i.test(core.getInput('skip-cache'));
     const qemuVer: string = core.getInput('qemu-version') || 'latest';
     const dockerConfigHome: string = process.env.DOCKER_CONFIG || path.join(os.homedir(), '.docker');
-    await installer.getBuildx(buildxVer, skipCache, dockerConfigHome);
+    await installer.buildx(buildxVer, dockerConfigHome);
 
     core.info('📣 Buildx info');
     await exec.exec('docker', ['buildx', 'version']);

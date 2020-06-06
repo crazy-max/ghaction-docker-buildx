@@ -12,8 +12,8 @@ inputs:
     default: 'latest'
     required: false
   skip-cache:
-    description: 'Skip cache of Buildx binary'
-    default: 'false'
+    description: 'Deprecated. No longer useful. Will not be supported after June 15, 2020'
+    deprecationMessage: 'The skip-cache input will not be supported after June 15, 2020. No longer useful'
     required: false
   qemu-version:
     description: 'QEMU static binaries Docker image version. Example: 4.2.0-7'
