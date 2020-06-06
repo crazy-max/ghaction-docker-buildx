@@ -29,7 +29,7 @@ jobs:
         run: npm audit --audit-level=high
       -
         name: Upload coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v1.0.7
         if: success()
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
