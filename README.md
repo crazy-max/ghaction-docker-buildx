@@ -234,6 +234,7 @@ jobs:
 * [GO Simple Tunnel](https://github.com/ginuerzh/gost)
 * [RSSHub](https://github.com/DIYgod/RSSHub)
 * [Cloudflared](https://github.com/crazy-max/docker-cloudflared)
+* [Prometheus Cryptowat Exporter](https://github.com/nbarrientos/cryptowat_exporter)
 
 ## Customizing
 
