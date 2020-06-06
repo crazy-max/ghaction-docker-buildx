@@ -57,7 +57,6 @@ jobs:
         uses: crazy-max/ghaction-docker-buildx@v2
         with:
           buildx-version: latest
-          skip-cache: false
           qemu-version: latest
       -
         name: Available platforms
@@ -244,7 +243,6 @@ Following inputs can be used as `step.with` keys
 | Name             | Type    | Default   | Description                        |
 |------------------|---------|-----------|------------------------------------|
 | `buildx-version` | String  | `latest`  | [Buildx](https://github.com/docker/buildx) version. Example: `v0.3.0` |
-| `skip-cache   `  | Bool    | `false`   | Skip cache of Buildx binary        |
 | `qemu-version`   | String  | `latest`  | [qemu-user-static](https://github.com/multiarch/qemu-user-static) version (Docker tag). Example: `4.2.0-7` |
 
 ### outputs
