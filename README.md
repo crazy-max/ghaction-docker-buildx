@@ -54,7 +54,7 @@ jobs:
       -
         name: Set up Docker Buildx
         id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v2
+        uses: crazy-max/ghaction-docker-buildx@v3
         with:
           buildx-version: latest
           qemu-version: latest
@@ -128,7 +128,7 @@ jobs:
             ${TAGS} --file ./test/Dockerfile ./test
       -
         name: Set up Docker Buildx
-        uses: crazy-max/ghaction-docker-buildx@v2
+        uses: crazy-max/ghaction-docker-buildx@v3
       -
         name: Docker Buildx (build)
         run: |
@@ -180,7 +180,7 @@ jobs:
         uses: actions/checkout@v2
       -
         name: Set up Docker Buildx
-        uses: crazy-max/ghaction-docker-buildx@v2
+        uses: crazy-max/ghaction-docker-buildx@v3
       -
         name: Cache Docker layers
         uses: actions/cache@v2

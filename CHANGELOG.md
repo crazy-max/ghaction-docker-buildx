@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.0 (2020/06/06)
+
+* Use `actions/tool-cache` for caching
+* `skip-cache` input no longer useful (deprecated)
+
 ## 2.0.1 (2020/06/03)
 
 * Leverage buildx cache example
