@@ -25,7 +25,17 @@ async function run(): Promise<void> {
     await exec.exec('docker', ['pull', '-q', `multiarch/qemu-user-static:${qemuVer}`]);
 
     core.info(`💎 Installing QEMU static binaries...`);
-    await exec.exec('docker', ['run', '--rm', '--privileged', 'multiarch/qemu-user-static', '--reset', '-p', 'yes']);
+    await exec.exec('docker', [
+      'run',
+      '--rm',
+      '--privileged',
+      'multiarch/qemu-user-static',
+      '--reset',
+      '-p',
+      'yes',
+      '--credential',
+      'yes'
+    ]);
 
     core.info('🔨 Creating a new builder instance...');
     await exec.exec('docker', [
