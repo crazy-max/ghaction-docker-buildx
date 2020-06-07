@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.0 (2020/06/07)
+
+* Handle nosuid (#213)
+
 ## 3.0.0 (2020/06/06)
 
 * Use `actions/tool-cache` for caching
