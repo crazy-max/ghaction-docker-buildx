@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.1 (2020/06/25)
+
+* `qemu-version` not taken into account (#220)
+
 ## 3.1.0 (2020/06/07)
 
 * Handle nosuid (#213)
