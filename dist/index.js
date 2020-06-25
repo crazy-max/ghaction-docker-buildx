@@ -2504,7 +2504,7 @@ function run() {
                 'run',
                 '--rm',
                 '--privileged',
-                'multiarch/qemu-user-static',
+                `multiarch/qemu-user-static:${qemuVer}`,
                 '--reset',
                 '-p',
                 'yes',
