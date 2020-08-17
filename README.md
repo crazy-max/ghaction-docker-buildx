@@ -134,28 +134,22 @@ jobs:
         run: |
           docker buildx build --output "type=image,push=false" ${{ steps.prepare.outputs.buildx_args }}
       -
-        name: Docker Login
+        name: Login to DockerHub
         if: success() && github.event_name != 'pull_request'
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: |
-          echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+        uses: crazy-max/ghaction-docker-login@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       -
         name: Docker Buildx (push)
         if: success() && github.event_name != 'pull_request'
         run: |
           docker buildx build --output "type=image,push=true" ${{ steps.prepare.outputs.buildx_args }}
       -
-        name: Docker Check Manifest
+        name: Inspect image
         if: always() && github.event_name != 'pull_request'
         run: |
-          docker run --rm mplatform/mquery ${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }}
-      -
-        name: Clear
-        if: always() && github.event_name != 'pull_request'
-        run: |
-          rm -f ${HOME}/.docker/config.json
+          docker buildx imagetools inspect ${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }}
 ```
 
 ### Leverage buildx cache
@@ -201,12 +195,11 @@ jobs:
             --tag crazymax/diun:latest \
             --file ./Dockerfile-diun ./
       -
-        name: Docker Login
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: |
-          echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+        name: Login to DockerHub
+        uses: crazy-max/ghaction-docker-login@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       -
         name: Docker Buildx (push)
         run: |
@@ -217,14 +210,9 @@ jobs:
             --tag crazymax/diun:latest \
             --file ./Dockerfile-diun ./
       -
-        name: Docker Check Manifest
+        name: Inspect image
         run: |
-          docker run --rm mplatform/mquery crazymax/diun:latest
-      -
-        name: Clear
-        if: always()
-        run: |
-          rm -f ${HOME}/.docker/config.json
+          docker buildx imagetools inspect crazymax/diun:latest
 ```
 
 ## Projects using this action

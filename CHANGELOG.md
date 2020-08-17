@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.3.0 (2020/08/17)
+
+* Use crazy-max/ghaction-docker-login action
+* Update deps
+
 ## 3.2.0 (2020/06/25)
 
 * `qemu-version` not taken into account (#220)
