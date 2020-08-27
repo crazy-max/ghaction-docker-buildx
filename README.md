@@ -137,7 +137,7 @@ jobs:
       -
         name: Login to DockerHub
         if: success() && github.event_name != 'pull_request'
-        uses: crazy-max/ghaction-docker-login@v1
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
@@ -197,7 +197,7 @@ jobs:
             --file ./Dockerfile-diun ./
       -
         name: Login to DockerHub
-        uses: crazy-max/ghaction-docker-login@v1
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
