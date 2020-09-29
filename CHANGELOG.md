@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.3.1 (2020/09/29)
+
+* Action moved to Docker organization (#234)
+* Update deps
+
 ## 3.3.0 (2020/08/17)
 
 * Use crazy-max/ghaction-docker-login action

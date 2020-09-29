@@ -13,6 +13,10 @@ async function run(): Promise<void> {
       return;
     }
 
+    core.warning(
+      'This action is ARCHIVED and will not receive any updates, update your workflows to use the official Docker action docker/setup-buildx-action@v1'
+    );
+
     const buildxVer: string = core.getInput('buildx-version') || 'latest';
     const qemuVer: string = core.getInput('qemu-version') || 'latest';
     const dockerConfigHome: string = process.env.DOCKER_CONFIG || path.join(os.homedir(), '.docker');

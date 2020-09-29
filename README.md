@@ -5,6 +5,10 @@
 [![Become a sponsor](https://img.shields.io/badge/sponsor-crazy--max-181717.svg?logo=github&style=flat-square)](https://github.com/sponsors/crazy-max)
 [![Paypal Donate](https://img.shields.io/badge/donate-paypal-00457c.svg?logo=paypal&style=flat-square)](https://www.paypal.me/crazyws)
 
+## Moved to Docker organization
+
+**This action is ARCHIVED and will not receive any updates, update your workflows to use the official Docker action [docker/setup-buildx-action@v1](https://github.com/docker/setup-buildx-action)**
+
 ## About
 
 GitHub Action to set up Docker [Buildx](https://github.com/docker/buildx).
