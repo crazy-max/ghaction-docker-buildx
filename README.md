@@ -7,7 +7,25 @@
 
 ## Moved to Docker organization
 
-**This action is ARCHIVED and will not receive any updates, update your workflows to use the official Docker action [docker/setup-buildx-action@v1](https://github.com/docker/setup-buildx-action)**
+**This action is ARCHIVED and will not receive any updates, update your workflows to use the official Docker actions.**
+
+Replace
+
+```yaml
+      - name: Set up Docker Buildx
+        uses: crazy-max/ghaction-docker-buildx@v3
+```
+
+With
+
+```yaml
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      # https://github.com/docker/setup-buildx-action
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+```
 
 ## About
 
